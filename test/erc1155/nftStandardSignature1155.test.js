@@ -836,6 +836,7 @@ describe("Miss PH NFTStandardSignature1155", function () {
 
   it("Update the authorized signer address", async function () {
     await expectRevert(missAny.changeAuthorizedSignerAddress(constants.ZERO_ADDRESS), "ERR_ZERO_ADDRESS");
+    await expectRevert(missAny.connect(bob).changeAuthorizedSignerAddress(bob.address), "Ownable: caller is not the owner");
     await missAny.changeAuthorizedSignerAddress(bob.address);
     expect(await missAny.authorizedSignerAddress()).to.equal(bob.address);
   });

@@ -38,7 +38,7 @@ contract RFOXNFTSignatureSale1155 is BaseRFOXNFT1155 {
    *
    * @param signerAddress new authorized signer address.
    */
-  function changeAuthorizedSignerAddress(address signerAddress) external {
+  function changeAuthorizedSignerAddress(address signerAddress) external onlyOwner {
     require(signerAddress != address(0), "ERR_ZERO_ADDRESS");
     address oldSignerAddress = authorizedSignerAddress;
     authorizedSignerAddress = signerAddress;
