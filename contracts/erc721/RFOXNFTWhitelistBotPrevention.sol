@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity 0.8.4;
 
 import "./lib/RFOXNFTSignaturePresale.sol";
 import "./structs/ParamStructs.sol";
