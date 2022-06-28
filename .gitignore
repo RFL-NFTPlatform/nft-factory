@@ -7,7 +7,6 @@ artifacts
 # Plugins files
 /coverage
 /deployments
-/package-lock.json
 .coverage.json
 # Secret files
 .env
