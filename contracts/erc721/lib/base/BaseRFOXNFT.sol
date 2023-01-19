@@ -221,14 +221,26 @@ contract BaseRFOXNFT is
 
     /**
      * @dev Owner can safe mint to address.
-     * Limited to only 1 token per minting.
      *
      * @param to Receiver address.
      */
     
     /// @param to Address of receiver
-    function safeMint(address to, uint256 totalMint) external onlyOwner tokenInSupply(totalMint) {
+    function safeMint(address to, uint256 totalMint) public onlyOwner tokenInSupply(totalMint) {
         _safeMint(to, totalMint);
+    }
+
+    /**
+     * @dev Owner can multiple safe mint to addresses.
+     *
+     * @param destinations Receiver addresses.
+     * @param totalMints total mint for addresses.
+     */
+    function multipleSafeMint(address[] memory destinations, uint256[] memory totalMints) external onlyOwner {
+        require(destinations.length == totalMints.length, "mismatch length of array");
+        for(uint256 i = 0; i < destinations.length; i++) {
+            safeMint(destinations[i], totalMints[i]);
+        }
     }
 
     /**

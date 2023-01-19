@@ -82,6 +82,37 @@ describe("Miss PH NFTStandard", function () {
     await expectRevert(missAny.connect(owner).safeMint(bob.address, 21), "Exceeded Max NFTs");
   });
 
+  it("correctly mints a NFT with multiple safe mint function", async function () {
+    expect(await missAny.connect(owner).multipleSafeMint([bob.address], [20])).to.emit(
+      missAny,
+      "Transfer"
+    );
+    expect(await missAny.balanceOf(bob.address)).to.equal(20);
+  });
+
+  it("correctly mints a NFT with multiple safe mint function with multiple addresses", async function () {
+    expect(await missAny.connect(owner).multipleSafeMint([bob.address, sara.address], [18, 2])).to.emit(
+      missAny,
+      "Transfer"
+    );
+    expect(await missAny.balanceOf(bob.address)).to.equal(18);
+    expect(await missAny.balanceOf(sara.address)).to.equal(2);
+  });
+
+  it("failed to safe multiple mint a NFT with multiple amount more than the limit", async function () {
+    await expectRevert(missAny.connect(owner).multipleSafeMint([bob.address], [21]), "Exceeded Max NFTs");
+  });
+
+  it("failed to safe multiple mint a NFT with multiple amount more than the limit for multiple addresses", async function () {
+    await expectRevert(missAny.connect(owner).multipleSafeMint([bob.address, sara.address], [18,3]), "Exceeded Max NFTs");
+    await expectRevert(missAny.connect(owner).multipleSafeMint([bob.address, sara.address], [20,1]), "Exceeded Max NFTs");
+  });
+
+  it("failed to safe multiple mint if array length mismatch", async function () {
+    await expectRevert(missAny.connect(owner).multipleSafeMint([bob.address, sara.address], [18]), "mismatch length of array");
+  });
+  
+
   it("returns correct balanceOf", async function () {
     await missAny.connect(owner).safeMint(bob.address, 1);
     expect(await missAny.balanceOf(bob.address)).to.equal(1);
