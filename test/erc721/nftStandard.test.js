@@ -63,17 +63,29 @@ describe("Miss PH NFTStandard", function () {
   });
 
   it("correctly mints a NFT", async function () {
-    expect(await missAny.connect(owner).safeMint(bob.address)).to.emit(
+    expect(await missAny.connect(owner).safeMint(bob.address, 1)).to.emit(
       missAny,
       "Transfer"
     );
     expect(await missAny.balanceOf(bob.address)).to.equal(1);
   });
 
+  it("correctly mints a NFT with multiple amount", async function () {
+    expect(await missAny.connect(owner).safeMint(bob.address, 20)).to.emit(
+      missAny,
+      "Transfer"
+    );
+    expect(await missAny.balanceOf(bob.address)).to.equal(20);
+  });
+
+  it("failed to mint a NFT with multiple amount more than the limit", async function () {
+    await expectRevert(missAny.connect(owner).safeMint(bob.address, 21), "Exceeded Max NFTs");
+  });
+
   it("returns correct balanceOf", async function () {
-    await missAny.connect(owner).safeMint(bob.address);
+    await missAny.connect(owner).safeMint(bob.address, 1);
     expect(await missAny.balanceOf(bob.address)).to.equal(1);
-    await missAny.connect(owner).safeMint(bob.address);
+    await missAny.connect(owner).safeMint(bob.address, 1);
     expect(await missAny.balanceOf(bob.address)).to.equal(2);
   });
 
@@ -167,12 +179,12 @@ describe("Miss PH NFTStandard", function () {
   });
 
   it("throws when trying to mint NFT to 0x0 address", async function () {
-    await expect(missAny.connect(owner).safeMint(zeroAddress)).to.be
+    await expect(missAny.connect(owner).safeMint(zeroAddress, 1)).to.be
       .reverted;
   });
 
   it("finds the correct owner of missAny id", async function () {
-    await missAny.connect(owner).safeMint(bob.address);
+    await missAny.connect(owner).safeMint(bob.address, 1);
     expect(await missAny.ownerOf(0)).to.equal(bob.address);
   });
 
@@ -181,7 +193,7 @@ describe("Miss PH NFTStandard", function () {
   });
 
   it("correctly approves account", async function () {
-    await missAny.connect(owner).safeMint(bob.address);
+    await missAny.connect(owner).safeMint(bob.address, 1);
     expect(await missAny.connect(bob).approve(sara.address, 0)).to.emit(
       missAny,
       "Approval"
@@ -190,7 +202,7 @@ describe("Miss PH NFTStandard", function () {
   });
 
   it("correctly cancels approval", async function () {
-    await missAny.connect(owner).safeMint(bob.address);
+    await missAny.connect(owner).safeMint(bob.address, 1);
     await missAny.connect(bob).approve(sara.address, 0);
     await missAny.connect(bob).approve(zeroAddress, 0);
     expect(await missAny.getApproved(0)).to.equal(zeroAddress);
@@ -201,13 +213,13 @@ describe("Miss PH NFTStandard", function () {
   });
 
   it("throws when trying to approve NFT ID from a third party", async function () {
-    await missAny.connect(owner).safeMint(bob.address);
+    await missAny.connect(owner).safeMint(bob.address, 1);
     await expect(missAny.connect(sara).approve(sara.address, 0)).to.be
       .reverted;
   });
 
   it("correctly sets an operator", async function () {
-    await missAny.connect(owner).safeMint(bob.address);
+    await missAny.connect(owner).safeMint(bob.address, 1);
     expect(
       await missAny.connect(bob).setApprovalForAll(sara.address, true)
     ).to.emit(missAny, "ApprovalForAll");
@@ -217,7 +229,7 @@ describe("Miss PH NFTStandard", function () {
   });
 
   it("correctly sets then cancels an operator", async function () {
-    await missAny.connect(owner).safeMint(bob.address);
+    await missAny.connect(owner).safeMint(bob.address, 1);
     await missAny.connect(bob).setApprovalForAll(sara.address, true);
     await missAny.connect(bob).setApprovalForAll(sara.address, false);
     expect(await missAny.isApprovedForAll(bob.address, sara.address)).to.equal(
@@ -226,7 +238,7 @@ describe("Miss PH NFTStandard", function () {
   });
 
   it("correctly transfers NFT from owner", async function () {
-    await missAny.connect(owner).safeMint(bob.address);
+    await missAny.connect(owner).safeMint(bob.address, 1);
     expect(
       await missAny.connect(bob).transferFrom(bob.address, sara.address, 0)
     ).to.emit(missAny, "Transfer");
@@ -236,7 +248,7 @@ describe("Miss PH NFTStandard", function () {
   });
 
   it("correctly transfers NFT from approved address", async function () {
-    await missAny.connect(owner).safeMint(bob.address);
+    await missAny.connect(owner).safeMint(bob.address, 1);
     await missAny.connect(bob).approve(sara.address, 0);
     await missAny.connect(sara).transferFrom(bob.address, jane.address, 0);
     expect(await missAny.balanceOf(bob.address)).to.equal(0);
@@ -245,7 +257,7 @@ describe("Miss PH NFTStandard", function () {
   });
 
   it("correctly transfers NFT as operator", async function () {
-    await missAny.connect(owner).safeMint(bob.address);
+    await missAny.connect(owner).safeMint(bob.address, 1);
     await missAny.connect(bob).setApprovalForAll(sara.address, true);
     await missAny.connect(sara).transferFrom(bob.address, jane.address, 0);
     expect(await missAny.balanceOf(bob.address)).to.equal(0);
@@ -254,14 +266,14 @@ describe("Miss PH NFTStandard", function () {
   });
 
   it("throws when trying to transfer NFT as an address that is not owner, approved or operator", async function () {
-    await missAny.connect(owner).safeMint(bob.address);
+    await missAny.connect(owner).safeMint(bob.address, 1);
     await expect(
       missAny.connect(sara).transferFrom(bob.address, jane.address, 0)
     ).to.be.reverted;
   });
 
   it("throws when trying to transfer NFT to a zero address", async function () {
-    await missAny.connect(owner).safeMint(bob.address);
+    await missAny.connect(owner).safeMint(bob.address, 1);
     await expect(
       missAny.connect(bob).transferFrom(bob.address, zeroAddress, 0)
     ).to.be.reverted;
@@ -280,7 +292,7 @@ describe("Miss PH NFTStandard", function () {
   });
 
   it("correctly safe transfers NFT from owner", async function () {
-    await missAny.connect(owner).safeMint(bob.address);
+    await missAny.connect(owner).safeMint(bob.address, 1);
     expect(
       await missAny
         .connect(bob)
@@ -464,18 +476,18 @@ describe("Miss PH NFTStandard", function () {
   });
 
   it("Safe mint should revert if called by unauthorized caller", async function () {
-    await expectRevert(missAny.connect(bob).safeMint(sara.address), "Ownable: caller is not the owner");
+    await expectRevert(missAny.connect(bob).safeMint(sara.address, 1), "Ownable: caller is not the owner");
   })
 
   it("Safe mint should revert if called by unauthorized caller", async function () {
     for(let i = 0; i < maxNfts; i++) {
-      await missAny.safeMint(sara.address);
+      await missAny.safeMint(sara.address, 1);
     }
-    await expectRevert(missAny.safeMint(sara.address), "Exceeded Max NFTs");
+    await expectRevert(missAny.safeMint(sara.address, 1), "Exceeded Max NFTs");
   })
 
   it("Safe mint", async function () {
-    await missAny.safeMint(sara.address);
+    await missAny.safeMint(sara.address, 1);
     expect(await missAny.balanceOf(sara.address)).to.be.equal(1);
     expect(await missAny.totalSupply()).to.be.equal(1);
   })
@@ -483,7 +495,7 @@ describe("Miss PH NFTStandard", function () {
   it("Update base URI", async function () {
     await expectRevert(missAny.connect(bob).setBaseURI("updatedLink"), "Ownable: caller is not the owner");
     await missAny.setBaseURI("updatedLink");
-    await missAny.safeMint(sara.address);
+    await missAny.safeMint(sara.address, 1);
     expect(await missAny.tokenURI(0)).to.equal("updatedLink0");
     expect(await missAny.baseURI()).to.equal("updatedLink");
   })

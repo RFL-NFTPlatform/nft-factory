@@ -227,8 +227,8 @@ contract BaseRFOXNFT is
      */
     
     /// @param to Address of receiver
-    function safeMint(address to) external onlyOwner tokenInSupply(1) {
-        _safeMint(to, 1);
+    function safeMint(address to, uint256 totalMint) external onlyOwner tokenInSupply(totalMint) {
+        _safeMint(to, totalMint);
     }
 
     /**

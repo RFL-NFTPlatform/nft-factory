@@ -79,7 +79,7 @@ module.exports = {
     //   accounts: [privateKey],
     // },
     goerli: {
-      url: `https://goerli.prylabs.net`,
+      url: `https://rpc.ankr.com/eth_goerli`,
       accounts: [privateKey],
     },
   },
