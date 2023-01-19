@@ -127,7 +127,7 @@ describe("Miss PH NFTStandard1155", function () {
   });
 
   it("throws when trying to transfer an invalid NFT", async function () {
-    await expectRevert(missAny.connect(bob).safeTransferFrom(jane.address, sara.address, id1, 100, "0x"), "ERC1155: caller is not owner nor approved")
+    await expectRevert(missAny.connect(bob).safeTransferFrom(jane.address, sara.address, id1, 100, "0x"), "ERC1155: caller is not token owner or approved")
   });
 
   it("Only owner can create NFT contract", async function () {

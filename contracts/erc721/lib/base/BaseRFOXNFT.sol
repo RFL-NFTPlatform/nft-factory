@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.4;
+pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "erc721a/contracts/ERC721A.sol";
+import "operator-filter-registry/src/DefaultOperatorFilterer.sol";
 import "../../../interfaces/IRFOXFactory.sol";
 
 /**
@@ -16,7 +17,8 @@ import "../../../interfaces/IRFOXFactory.sol";
 contract BaseRFOXNFT is
     ERC721A,
     Pausable,
-    Ownable
+    Ownable,
+    DefaultOperatorFilterer
 {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
@@ -320,5 +322,29 @@ contract BaseRFOXNFT is
         uint256 oldTokenPrice = TOKEN_PRICE;
         TOKEN_PRICE = newTokenPrice;
         emit UpdateTokenPrice(msg.sender, oldTokenPrice, TOKEN_PRICE);
+    }
+
+    function setApprovalForAll(address operator, bool approved) public override onlyAllowedOperatorApproval(operator) {
+        super.setApprovalForAll(operator, approved);
+    }
+
+    function approve(address operator, uint256 tokenId) public override onlyAllowedOperatorApproval(operator) {
+        super.approve(operator, tokenId);
+    }
+
+    function transferFrom(address from, address to, uint256 tokenId) public override onlyAllowedOperator(from) {
+        super.transferFrom(from, to, tokenId);
+    }
+
+    function safeTransferFrom(address from, address to, uint256 tokenId) public override onlyAllowedOperator(from) {
+        super.safeTransferFrom(from, to, tokenId);
+    }
+
+    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data)
+        public
+        override
+        onlyAllowedOperator(from)
+    {
+        super.safeTransferFrom(from, to, tokenId, data);
     }
 }

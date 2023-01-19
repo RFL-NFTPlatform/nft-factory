@@ -37,7 +37,7 @@ const infuraKey = process.env.INFURA_KEY;
  */
 module.exports = {
   solidity: {
-    version: "0.8.4",
+    version: "0.8.17",
     settings: {
       optimizer: {
         enabled: true,
@@ -78,6 +78,10 @@ module.exports = {
     //   url: "https://bsc-dataseed.binance.org/",
     //   accounts: [privateKey],
     // },
+    goerli: {
+      url: `https://goerli.prylabs.net`,
+      accounts: [privateKey],
+    },
   },
   etherscan: {
     apiKey: etherscan,
