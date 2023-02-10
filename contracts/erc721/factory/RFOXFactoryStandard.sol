@@ -21,9 +21,9 @@ contract RFOXFactoryStandard is Ownable {
             newNFT := create2(0, add(bytecode, 32), mload(bytecode), salt)
         }
 
-        RFOXNFTStandard(newNFT).initialize(params);
-
         allNFTs.push(address(newNFT));
+
+        RFOXNFTStandard(newNFT).initialize(params);
 
         emit NewRFOXNFT(newNFT, params);
 

@@ -305,6 +305,8 @@ contract BaseRFOXNFT is
         if (saleEndTime > 0)
             require(block.timestamp <= saleEndTime, "Sale has been finished");
 
+        _safeMint(msg.sender, tokensNumber);
+
         if (address(saleToken) == address(0)) {
             require(
                 msg.value == (TOKEN_PRICE * tokensNumber),
@@ -319,8 +321,6 @@ contract BaseRFOXNFT is
                 TOKEN_PRICE * tokensNumber
             );
         }
-
-        _safeMint(msg.sender, tokensNumber);
     }
 
     /**

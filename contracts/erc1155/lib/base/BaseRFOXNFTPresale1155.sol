@@ -64,6 +64,8 @@ contract BaseRFOXNFTPresale1155 is BaseRFOXNFT1155
 
         totalPresaleMintedPerAddress[tokenData.tokenID][msg.sender] = totalPresaleMintedByAddress + tokensNumber;
 
+        _mint(msg.sender, tokenData.tokenID, tokensNumber, "");
+
         if (address(tokenData.saleToken) == address(0)) {
             require(
                 msg.value == (presaleSettingsData.tokenPricePresale * tokensNumber),
@@ -78,8 +80,6 @@ contract BaseRFOXNFTPresale1155 is BaseRFOXNFT1155
                 presaleSettingsData.tokenPricePresale * tokensNumber
             );
         }
-
-        _mint(msg.sender, tokenData.tokenID, tokensNumber, "");
     }
 
     /**

@@ -243,6 +243,8 @@ contract BaseRFOXNFT1155 is
     function _buyNFTs(TokenStructs.TokenDataStandard storage tokenData, uint256 tokensNumber) internal {
         _checkPublicSaleRequirement(tokenData, tokensNumber);
 
+        _mint(msg.sender, tokenData.tokenID, tokensNumber, "");
+
         if (address(tokenData.saleToken) == address(0)) {
             require(
                 msg.value == (tokenData.tokenPrice * tokensNumber),
@@ -257,8 +259,6 @@ contract BaseRFOXNFT1155 is
                 tokenData.tokenPrice * tokensNumber
             );
         }
-
-        _mint(msg.sender, tokenData.tokenID, tokensNumber, "");
     }
 
     /**

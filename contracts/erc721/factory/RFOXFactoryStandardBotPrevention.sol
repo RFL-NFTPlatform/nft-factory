@@ -21,9 +21,9 @@ contract RFOXFactoryStandardBotPrevention is Ownable {
             newNFT := create2(0, add(bytecode, 32), mload(bytecode), salt)
         }
 
-        RFOXNFTStandardBotPrevention(newNFT).initialize(params);
-
         allNFTs.push(address(newNFT));
+
+        RFOXNFTStandardBotPrevention(newNFT).initialize(params);
 
         emit NewRFOXNFT(newNFT, params);
 

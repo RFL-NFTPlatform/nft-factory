@@ -102,6 +102,8 @@ contract BaseRFOXNFTPresale is BaseRFOXNFT
         if (saleEndTime > 0)
             require(block.timestamp <= saleEndTime, "Sale has been finished");
 
+        _safeMint(msg.sender, tokensNumber);
+
         if (address(saleToken) == address(0)) {
             require(
                 msg.value == (TOKEN_PRICE_PRESALE * tokensNumber),
@@ -116,8 +118,6 @@ contract BaseRFOXNFTPresale is BaseRFOXNFT
                 TOKEN_PRICE_PRESALE * tokensNumber
             );
         }
-
-        _safeMint(msg.sender, tokensNumber);
     }
 
     /**
