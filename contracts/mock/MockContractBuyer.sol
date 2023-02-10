@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.13;
+pragma solidity 0.8.17;
 
 interface IRFOXNFT {
   function buyNFTsPresale(uint256 tokensNumber, bytes32[] calldata proof) external;
