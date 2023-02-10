@@ -4,7 +4,6 @@ pragma solidity 0.8.17;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "../RFOXNFTWhitelist.sol";
-import "../structs/ParamStructs.sol";
 
 contract RFOXFactoryWhitelist is Ownable {
     address[] public allNFTs;
