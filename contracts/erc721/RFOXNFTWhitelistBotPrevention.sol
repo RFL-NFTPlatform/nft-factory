@@ -3,8 +3,9 @@ pragma solidity ^0.8.13;
 
 import "./lib/RFOXNFTSignaturePresale.sol";
 import "./structs/ParamStructs.sol";
+import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 
-contract RFOXNFTWhitelistBotPrevention is RFOXNFTSignaturePresale {
+contract RFOXNFTWhitelistBotPrevention is RFOXNFTSignaturePresale, Initializable {
     /**
      * @dev Initialization of the RFOX NFT with presale / whitelist mechanism.
      * Can only be called by the factory.
@@ -16,7 +17,7 @@ contract RFOXNFTWhitelistBotPrevention is RFOXNFTSignaturePresale {
      *
      * @param params Struct for whitelist parameters.
      */
-    function initialize(ParamStructs.WhitelistParams calldata params) external {
+    function initialize(ParamStructs.WhitelistParams calldata params) external initializer {
         require(msg.sender == address(factory), "Forbidden");
         require(
             params.publicSaleStartTime >= params.saleStartTime,

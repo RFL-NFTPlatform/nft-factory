@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "./BaseRFOXNFT1155.sol";
@@ -12,7 +11,6 @@ import "./BaseRFOXNFT1155.sol";
  */
 contract BaseRFOXNFTPresale1155 is BaseRFOXNFT1155
 {
-    using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
     // Token Data map with the token struct data
@@ -62,13 +60,13 @@ contract BaseRFOXNFTPresale1155 is BaseRFOXNFT1155
 
         // Check & Add total minted during presale by address
         uint256 totalPresaleMintedByAddress = totalPresaleMintedPerAddress[tokenData.tokenID][msg.sender];
-        require(totalPresaleMintedByAddress.add(tokensNumber) <= presaleSettingsData.maxMintedPresalePerAddress, "Exceed the limit");
+        require((totalPresaleMintedByAddress + tokensNumber) <= presaleSettingsData.maxMintedPresalePerAddress, "Exceed the limit");
 
-        totalPresaleMintedPerAddress[tokenData.tokenID][msg.sender] = totalPresaleMintedByAddress.add(tokensNumber);
+        totalPresaleMintedPerAddress[tokenData.tokenID][msg.sender] = totalPresaleMintedByAddress + tokensNumber;
 
         if (address(tokenData.saleToken) == address(0)) {
             require(
-                msg.value == presaleSettingsData.tokenPricePresale.mul(tokensNumber),
+                msg.value == (presaleSettingsData.tokenPricePresale * tokensNumber),
                 "Invalid eth for purchasing"
             );
         } else {
@@ -77,7 +75,7 @@ contract BaseRFOXNFTPresale1155 is BaseRFOXNFT1155
             tokenData.saleToken.safeTransferFrom(
                 msg.sender,
                 address(this),
-                presaleSettingsData.tokenPricePresale.mul(tokensNumber)
+                presaleSettingsData.tokenPricePresale * tokensNumber
             );
         }
 

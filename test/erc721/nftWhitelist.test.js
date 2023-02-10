@@ -129,7 +129,7 @@ describe("Miss PH NFTWHitelist", function () {
 
     await expectRevert(missAny.initialize(
       params
-    ), "Forbidden")
+    ), "Initializable: contract is already initialized")
   })
 
   it("throws when initialize the NFTs with invalid period", async function() {

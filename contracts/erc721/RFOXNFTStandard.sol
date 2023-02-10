@@ -3,8 +3,9 @@ pragma solidity ^0.8.13;
 
 import "./lib/RFOXNFTSale.sol";
 import "./structs/ParamStructs.sol";
+import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 
-contract RFOXNFTStandard is RFOXNFTSale {
+contract RFOXNFTStandard is RFOXNFTSale, Initializable {
     /**
      * @dev Initialization of the standard RFOX NFT.
      * Can only be called by the factory.
@@ -16,7 +17,7 @@ contract RFOXNFTStandard is RFOXNFTSale {
      *
      * @param params Struct for standard parameters.
      */
-    function initialize(ParamStructs.StandardParams calldata params) external {
+    function initialize(ParamStructs.StandardParams calldata params) external initializer  {
         require(msg.sender == address(factory), "Forbidden");
 
         initializeBase(

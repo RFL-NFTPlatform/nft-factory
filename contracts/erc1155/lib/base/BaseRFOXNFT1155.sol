@@ -2,7 +2,6 @@
 pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
@@ -18,7 +17,6 @@ contract BaseRFOXNFT1155 is
     Ownable,
     ERC1155Supply
 {
-    using SafeMath for uint256;
     using Strings for uint256;
     using SafeERC20 for IERC20;
 
@@ -65,7 +63,7 @@ contract BaseRFOXNFT1155 is
         require(tokenData.active, "Token is not active");
 
         // Check token in supply
-        require(totalSupply(tokenData.tokenID).add(tokensNumber) <= tokenData.maxSupply,
+        require((totalSupply(tokenData.tokenID) + tokensNumber) <= tokenData.maxSupply,
             "Exceeded Max NFTs"
         );
 
@@ -247,7 +245,7 @@ contract BaseRFOXNFT1155 is
 
         if (address(tokenData.saleToken) == address(0)) {
             require(
-                msg.value == (tokenData.tokenPrice).mul(tokensNumber),
+                msg.value == (tokenData.tokenPrice * tokensNumber),
                 "Invalid eth for purchasing"
             );
         } else {
@@ -256,7 +254,7 @@ contract BaseRFOXNFT1155 is
             tokenData.saleToken.safeTransferFrom(
                 msg.sender,
                 address(this),
-                (tokenData.tokenPrice).mul(tokensNumber)
+                tokenData.tokenPrice * tokensNumber
             );
         }
 

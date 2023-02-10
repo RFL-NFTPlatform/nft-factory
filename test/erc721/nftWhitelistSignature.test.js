@@ -146,7 +146,7 @@ describe("Miss PH NFTWhitelistSignature", async function () {
       owner.address
     );
     
-    await expectRevert(missAny.initialize(params), "Forbidden")
+    await expectRevert(missAny.initialize(params), "Initializable: contract is already initialized")
   })
 
   it("throws when initialize the NFTs with invalid period", async function() {

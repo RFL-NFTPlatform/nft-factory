@@ -2,10 +2,11 @@
 pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import "./lib/RFOXNFTPresale1155.sol";
 import "./structs/ParamStructs1155.sol";
 
-contract RFOXNFTWhitelist1155 is RFOXNFTPresale1155 {
+contract RFOXNFTWhitelist1155 is RFOXNFTPresale1155, Initializable {
 
     /**
      * @dev Initialization of the RFOX NFT with presale / whitelist mechanism.
@@ -18,7 +19,7 @@ contract RFOXNFTWhitelist1155 is RFOXNFTPresale1155 {
      *
      * @param params Struct for whitelist parameters.
      */
-    function initialize(ParamStructs1155.StandardParams calldata params) external {
+    function initialize(ParamStructs1155.StandardParams calldata params) external initializer {
         require(msg.sender == address(factory), "Forbidden");
 
         initializeBase(

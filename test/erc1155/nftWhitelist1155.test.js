@@ -114,7 +114,7 @@ describe("Miss PH NFTWhitelist1155", function () {
       owner.address
     );
 
-    await expectRevert(missAny.initialize(params), "Forbidden")
+    await expectRevert(missAny.initialize(params), "Initializable: contract is already initialized")
   })
 
   it("throws when initialize the NFTs with invalid period", async function() {
@@ -162,7 +162,7 @@ describe("Miss PH NFTWhitelist1155", function () {
   })
 
   it("throws when trying to get count of NFTs owned by 0x0 address", async function () {
-    await expectRevert(missAny.balanceOf(zeroAddress, 0), "ERC1155: balance query for the zero address");
+    await expectRevert(missAny.balanceOf(zeroAddress, 0), "ERC1155: address zero is not a valid owner");
   });
 
   it("throws when trying to transfer an invalid balance", async function () {

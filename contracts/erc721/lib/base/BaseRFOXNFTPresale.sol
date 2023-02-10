@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "./BaseRFOXNFT.sol";
@@ -12,7 +11,6 @@ import "./BaseRFOXNFT.sol";
  */
 contract BaseRFOXNFTPresale is BaseRFOXNFT
 {
-    using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
     // How many NFTs can be minted per address during presale
@@ -98,15 +96,15 @@ contract BaseRFOXNFTPresale is BaseRFOXNFT
 
     /// @param tokensNumber How many NFTs for buying this round
     function _buyNFTsPresale(uint256 tokensNumber) internal tokenInSupply(tokensNumber) {
-        require(totalPresaleMintedPerAddress[msg.sender].add(tokensNumber) <= maxMintedPresalePerAddress, "Exceed the limit");
-        totalPresaleMintedPerAddress[msg.sender] = totalPresaleMintedPerAddress[msg.sender].add(tokensNumber);
+        require((totalPresaleMintedPerAddress[msg.sender] + tokensNumber) <= maxMintedPresalePerAddress, "Exceed the limit");
+        totalPresaleMintedPerAddress[msg.sender] = totalPresaleMintedPerAddress[msg.sender] + tokensNumber;
         
         if (saleEndTime > 0)
             require(block.timestamp <= saleEndTime, "Sale has been finished");
 
         if (address(saleToken) == address(0)) {
             require(
-                msg.value == TOKEN_PRICE_PRESALE.mul(tokensNumber),
+                msg.value == (TOKEN_PRICE_PRESALE * tokensNumber),
                 "Invalid eth for purchasing"
             );
         } else {
@@ -115,7 +113,7 @@ contract BaseRFOXNFTPresale is BaseRFOXNFT
             saleToken.safeTransferFrom(
                 msg.sender,
                 address(this),
-                TOKEN_PRICE_PRESALE.mul(tokensNumber)
+                TOKEN_PRICE_PRESALE * tokensNumber
             );
         }
 
