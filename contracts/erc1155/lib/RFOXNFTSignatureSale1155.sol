@@ -12,7 +12,7 @@ contract RFOXNFTSignatureSale1155 is BaseRFOXNFT1155 {
   using ECDSA for bytes32;
 
   address public authorizedSignerAddress;
-  mapping(bytes => bool) usedSignature;
+  mapping(bytes => bool) public usedSignature;
 
   event AuthorizedSignerAddress(address indexed sender, address oldAddress, address newAddress);
 

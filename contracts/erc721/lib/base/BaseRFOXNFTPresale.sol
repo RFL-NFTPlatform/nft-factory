@@ -23,7 +23,7 @@ contract BaseRFOXNFTPresale is BaseRFOXNFT
     uint256 public TOKEN_PRICE_PRESALE;
 
     // Flag for total NFT minted during presale
-    mapping(address => uint256) totalPresaleMintedPerAddress;
+    mapping(address => uint256) public totalPresaleMintedPerAddress;
 
     // Merkle root for whitelist proof
     bytes32 public merkleRoot;
