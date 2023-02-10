@@ -13,7 +13,7 @@ contract RFOXNFTStandardBotPrevention1155 is RFOXNFTSignatureSale1155, Initializ
      * Features:
      * Public sale.
      * No presale / whitelisted address.
-     * No Bot Prevention
+     * Bot Prevention
      *
      * @param params Struct for standard parameters.
      */
