@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.17;
 
-import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import "./lib/RFOXNFTSignaturePresale1155.sol";
 import "./structs/ParamStructs1155.sol";
