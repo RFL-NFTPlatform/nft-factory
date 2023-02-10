@@ -6,7 +6,6 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "../../structs/TokenStructs.sol";
-import "../../../interfaces/IRFOXFactory.sol";
 
 /**
  * @dev Base Contract of RFOX NFT, which extend ERC1155
@@ -26,7 +25,7 @@ contract BaseRFOXNFT1155 is
     // Override the base uri
     string private _baseURIPrefix;
     // NFT Factory
-    IRFOXFactory public factory;
+    address public factory;
     // Token Data map with the token struct data
     mapping(uint256 => TokenStructs.TokenDataStandard) public dataTokens;
 
@@ -108,7 +107,7 @@ contract BaseRFOXNFT1155 is
     }
 
     constructor() ERC1155("") {
-        factory = IRFOXFactory(msg.sender);
+        factory = msg.sender;
     }
 
     /**

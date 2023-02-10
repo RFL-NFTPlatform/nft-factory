@@ -10,8 +10,7 @@ contract RFOXFactoryStandard1155 is Ownable {
 
     event NewRFOXNFT(address indexed nftAddress, ParamStructs1155.StandardParams params);
 
-    function createNFT(ParamStructs1155.StandardParams calldata _params) external onlyOwner returns (address newNFT) {
-        ParamStructs1155.StandardParams memory params = _params;
+    function createNFT(ParamStructs1155.StandardParams calldata params) external onlyOwner returns (address newNFT) {
         bytes memory bytecode = type(RFOXNFTStandard1155).creationCode;
         bytes32 salt = keccak256(
             abi.encodePacked(allNFTs.length, params.name, params.symbol)

@@ -6,7 +6,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "erc721a/contracts/ERC721A.sol";
 import "operator-filter-registry/src/DefaultOperatorFilterer.sol";
-import "../../../interfaces/IRFOXFactory.sol";
 
 /**
  * @dev Base Contract of RFOX NFT, which extend ERC721A
@@ -35,7 +34,7 @@ contract BaseRFOXNFT is
     // NFTs sale's currency
     IERC20 public saleToken;
     // NFT Factory
-    IRFOXFactory public factory;
+    address public factory;
     // NFTs can not min exceed MAX_NFT
 
     // Timestamp of selling started for whitelisted addresses
@@ -109,7 +108,7 @@ contract BaseRFOXNFT is
     }
 
     constructor() ERC721A("", "") {
-        factory = IRFOXFactory(msg.sender);
+        factory = msg.sender;
     }
 
     /**

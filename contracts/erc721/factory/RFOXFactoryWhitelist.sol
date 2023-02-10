@@ -10,8 +10,7 @@ contract RFOXFactoryWhitelist is Ownable {
 
     event NewRFOXNFT(address indexed nftAddress, ParamStructs.WhitelistParams params);
 
-    function createNFT(ParamStructs.WhitelistParams calldata _params) external onlyOwner returns (address newNFT) {
-        ParamStructs.WhitelistParams memory params = _params;
+    function createNFT(ParamStructs.WhitelistParams calldata params) external onlyOwner returns (address newNFT) {
         bytes memory bytecode = type(RFOXNFTWhitelist).creationCode;
         bytes32 salt = keccak256(
             abi.encodePacked(allNFTs.length, params.name, params.symbol)

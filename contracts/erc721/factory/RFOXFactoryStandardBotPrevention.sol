@@ -10,8 +10,7 @@ contract RFOXFactoryStandardBotPrevention is Ownable {
 
     event NewRFOXNFT(address indexed nftAddress, ParamStructs.StandardParams params);
 
-    function createNFT(ParamStructs.StandardParams calldata _params) external onlyOwner returns (address newNFT) {
-        ParamStructs.StandardParams memory params = _params;
+    function createNFT(ParamStructs.StandardParams calldata params) external onlyOwner returns (address newNFT) {
         bytes memory bytecode = type(RFOXNFTStandardBotPrevention).creationCode;
         bytes32 salt = keccak256(
             abi.encodePacked(allNFTs.length, params.name, params.symbol)
