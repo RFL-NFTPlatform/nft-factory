@@ -39,4 +39,11 @@ Plugin should import from hardhat.config.js
    - Pausable Contract module which allows children to implement an emergency stop mechanism that can be triggered by an authorized account.
    - Counters: Provides counters that can only be incremented or decremented by one. This can be used e.g. to track the number of elements in a mapping, issuing ERC721 ids, or counting request ids.
 
-### Contracts
+### Requirement for compilation & testing
+   - Install dependencies (npm install)
+   - Add override keyword in node_modules/erc721a/contracts/ERC721A.sol\
+     function setApprovalForAll(address operator, bool approved) public virtual `override`\
+     function approve(address to, uint256 tokenId) public virtual `override`
+   - run ganache `ganache-cli`
+   - hardhat test / npm run test
+
